@@ -59,14 +59,17 @@ while continue_reading:
 
         
         #Check to see if card UID read matches your card UID
-        if uid == my_uid:                #Open the Doggy Door if matching UIDs
+        if uid == my_uid:                
             print("Access Granted")
-            #GPIO.output(LED, GPIO.HIGH)  #Turn on LED
-            time.sleep(5)                #Wait 5 Seconds
-            #GPIO.output(LED, GPIO.LOW)   #Turn off LED
+            GPIO.output(LEDgreen, GPIO.HIGH)  #Turn on LED
+            time.sleep(3)                
+            GPIO.output(LEDgreen, GPIO.LOW)   #Turn off LED
             
         else:                            #Don't open if UIDs don't match
             print("Access Denied - du gay XD")
+            GPIO.output(LEDred, GPIO.LOW)
+            time.sleep(0.5)
+            GPIO.output(LEDred, GPIO.HIGH)
         
 ##        # Authenticate
 ##        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
