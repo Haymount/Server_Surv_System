@@ -8,7 +8,9 @@ continue_reading = True
 GPIO.setmode(GPIO.BCM)
 
 LEDred = 14
-GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
+GPIO.setup(LEDred, GPIO.OUT, initial=GPIO.HIGH)
+LEDgreen = 18
+GPIO.setup(LEDgreen, GPIO.OUT, initial=GPIO.LOW)
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
@@ -51,19 +53,19 @@ while continue_reading:
         # Select the scanned tag
         MIFAREReader.MFRC522_SelectTag(uid)
         
-        #ENTER Your Card UID here
-                 #brik               #kort
-        my_uid = [231,33,64,82,212], [1,179,159,46,3]
+        #ENTER Your Card UID here           
+        my_uid_brik = [231,33,64,82,212]  #brik    
+        my_uid_kort = [1,179,159,46,3] #kort
         
         #Configure LED Output Pin
-        LEDred = 14
-        LEDgreen = 15
-        GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
-        GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
+        #LEDred = 14
+        #LEDgreen = 15
+        #GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
+        #GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
 
         
         #Check to see if card UID read matches your card UID
-        if uid == my_uid:                
+        if uid == my_uid_brik: #or my_uid_kort:                
             print("Access Granted")
             GPIO.output(LEDgreen, GPIO.HIGH)  #Turn on LED
             time.sleep(3)                
@@ -74,6 +76,7 @@ while continue_reading:
             GPIO.output(LEDred, GPIO.LOW)
             time.sleep(0.5)
             GPIO.output(LEDred, GPIO.HIGH)
+        
         
 ##        # Authenticate
 ##        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
