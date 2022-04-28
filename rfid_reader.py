@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import MFRC522
+import mfrc522 as MFRC522
 import signal
 import time
  
@@ -53,10 +53,10 @@ while continue_reading:
         #Configure LED Output Pin
         LEDred = 14
         LEDgreen = 15
-        GPIO.setup(LEDgreen, GPIO.OUT)
-        GPIO.output(LEDgreen, GPIO.LOW)
-        GPIO.setup(LEDred, GPIO.OUT)
-        GPIO.output(LEDred, GPIO.HIGH)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
+
         
         #Check to see if card UID read matches your card UID
         if uid == my_uid:                #Open the Doggy Door if matching UIDs
