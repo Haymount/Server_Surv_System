@@ -4,7 +4,9 @@ import signal
 import time
  
 continue_reading = True
- 
+
+GPIO.setmode(GPIO.BCM)
+
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
     global continue_reading
@@ -53,7 +55,6 @@ while continue_reading:
         #Configure LED Output Pin
         LEDred = 14
         LEDgreen = 15
-        GPIO.setmode(GPIO.BCM)
         GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
         GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
 
