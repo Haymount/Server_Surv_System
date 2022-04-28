@@ -7,6 +7,9 @@ continue_reading = True
 
 GPIO.setmode(GPIO.BCM)
 
+LEDred = 14
+GPIO.setup(14, GPIO.OUT, initial=GPIO.HIGH)
+
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
     global continue_reading
