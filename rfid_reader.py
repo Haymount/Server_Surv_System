@@ -19,7 +19,7 @@ signal.signal(signal.SIGINT, end_read)
 MIFAREReader = MFRC522.MFRC522()
  
 # Welcome message
-print ("Welcome to the MFRC522 data read example")
+print ("Kast med kortet bror")
 print ("Press Ctrl-C to stop.")
  
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
@@ -47,12 +47,16 @@ while continue_reading:
         MIFAREReader.MFRC522_SelectTag(uid)
         
         #ENTER Your Card UID here
-        my_uid = [61,84,4,114,31]
+                 #brik               #kort
+        my_uid = [231,33,64,82,212], [1,179,159,46,3]
         
         #Configure LED Output Pin
-        #LED = 18
-        #GPIO.setup(LED, GPIO.OUT)
-        #GPIO.output(LED, GPIO.LOW)
+        LEDred = 14
+        LEDgreen = 15
+        GPIO.setup(LEDgreen, GPIO.OUT)
+        GPIO.output(LEDgreen, GPIO.LOW)
+        GPIO.setup(LEDred, GPIO.OUT)
+        GPIO.output(LEDred, GPIO.HIGH)
         
         #Check to see if card UID read matches your card UID
         if uid == my_uid:                #Open the Doggy Door if matching UIDs
@@ -62,7 +66,7 @@ while continue_reading:
             #GPIO.output(LED, GPIO.LOW)   #Turn off LED
             
         else:                            #Don't open if UIDs don't match
-            print("Access Denied, YOU SHALL NOT PASS!")
+            print("Access Denied - du gay XD")
         
 ##        # Authenticate
 ##        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
