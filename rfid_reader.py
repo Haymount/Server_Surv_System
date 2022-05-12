@@ -57,7 +57,7 @@ while continue_reading:
         my_uid_brik = [231,33,64,82,212] #brik 
         my_uid_kort = [1,179,159,46,3] #kort
 
-        
+        #
         #Check to see if card UID read matches your card UID
         if uid == my_uid_brik: #or my_uid_kort:                
             print("Access Granted")
