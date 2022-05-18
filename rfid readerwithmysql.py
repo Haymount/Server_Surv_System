@@ -107,7 +107,7 @@ finally:
 
         # Read time and date
     #_currTime = strftime("%H:%M:%S", gmtime())
-    #_currDate = date.today().strftime("%Y-%m-%d")
+    #_currDate = date.today().strftime("%Y-%  m-%d")
 
         # Send out a greeting to print name and date
     #print("Hello " + firstname + " " + lastname)
