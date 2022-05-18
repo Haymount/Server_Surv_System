@@ -1,79 +1,53 @@
-import RPi.GPIO as GPIO
-import MFRC522
-import signal
+#!/usr/bin/env python
+
 import time
- 
-continue_reading = True
- 
-# Capture SIGINT for cleanup when the script is aborted
-def end_read(signal,frame):
-    global continue_reading
-    print ("Ctrl+C captured, ending read.")
-    continue_reading = False
-    GPIO.cleanup()
- 
-# Hook the SIGINT
-signal.signal(signal.SIGINT, end_read)
- 
-# Create an object of the class MFRC522
-MIFAREReader = MFRC522.MFRC522()
- 
-# Welcome message
-print ("Kast med kortet bror")
-print ("Press Ctrl-C to stop.")
- 
-# This loop keeps checking for chips. If one is near it will get the UID and authenticate
-while continue_reading:
-    
-    # Scan for cards    
-    (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
- 
-    # If a card is found
-    if status == MIFAREReader.MI_OK:
-        print ("Card detected")
-    
-    # Get the UID of the card
-    (status,uid) = MIFAREReader.MFRC522_Anticoll()
- 
-    # If we have the UID, continue
-    if status == MIFAREReader.MI_OK:
- 
-        # Print UID
-        print ("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3])+','+str(uid[4]))  
-        # This is the default key for authentication
-        key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
-        
-        # Select the scanned tag
-        MIFAREReader.MFRC522_SelectTag(uid)
-        
-        #ENTER Your Card UID here
-                 #brik               #kort
-        my_uid = [231,33,64,82,212], [1,179,159,46,3]
-        
-        #Configure LED Output Pin
-        LEDred = 14
-        LEDgreen = 15
-        GPIO.setup(LEDgreen, GPIO.OUT)
-        GPIO.output(LEDgreen, GPIO.LOW)
-        GPIO.setup(LEDred, GPIO.OUT)
-        GPIO.output(LEDred, GPIO.HIGH)
-        
-        #Check to see if card UID read matches your card UID
-        if uid == my_uid:                #Open the Doggy Door if matching UIDs
-            print("Access Granted")
-            #GPIO.output(LED, GPIO.HIGH)  #Turn on LED
-            time.sleep(5)                #Wait 5 Seconds
-            #GPIO.output(LED, GPIO.LOW)   #Turn off LED
-            
-        else:                            #Don't open if UIDs don't match
-            print("Access Denied - du gay XD")
-        
-##        # Authenticate
-##        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
-##
-##        # Check if authenticated
-##        if status == MIFAREReader.MI_OK:
-##            MIFAREReader.MFRC522_Read(8)
-##            MIFAREReader.MFRC522_StopCrypto1()
-##        else:
-##            print "Authentication error"
+import RPi.GPIO as GPIO
+from mfrc522 import SimpleMFRC522
+import mysql.connector
+
+
+db = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  passwd="fedtfirma42",
+  database="rfiddb"
+)
+
+cursor = db.cursor()
+reader = SimpleMFRC522()
+
+
+try:
+  while True:
+   # lcd.clear()
+    print('Place Card to\nregister')
+    id, text = reader.read()
+    cursor.execute("SELECT id FROM users WHERE rfid_uid="+str(id))
+    cursor.fetchone()
+
+    if cursor.rowcount >= 1:
+     # lcd.clear()
+      print("Overwrite\nexisting user?")
+      overwrite = input("Overwite (Y/N)? ")
+      if overwrite[0] == 'Y' or overwrite[0] == 'y':
+       # lcd.clear()
+        Print("Overwriting user.")
+        time.sleep(1)
+        sql_insert = "UPDATE users SET name = %s WHERE rfid_uid=%s"
+      else:
+        continue;
+    else:
+      sql_insert = "INSERT INTO users (name, rfid_uid) VALUES (%s, %s)"
+   # lcd.clear()
+    print('Enter new name')
+    new_name = input("Name: ")
+
+    cursor.execute(sql_insert, (new_name, id))
+
+    db.commit()
+
+   # lcd.clear()
+    print("User " + new_name + "\nSaved")
+    time.sleep(2)
+finally:
+  GPIO.cleanup()
