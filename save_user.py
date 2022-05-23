@@ -40,7 +40,6 @@ try:
    # lcd.clear()
     print('Enter new name')
     new_name = input("Name: ")
-    print("Indtast 4 tal")
     new_readline = input("Indtast en 4 cifret tal kode: ")
     if new_readline > 4:
       print("fejl maks 4 tal ")
