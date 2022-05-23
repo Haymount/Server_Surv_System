@@ -16,7 +16,6 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 reader = SimpleMFRC522()
 
-
 try:
   while True:
    # lcd.clear()
@@ -41,8 +40,13 @@ try:
    # lcd.clear()
     print('Enter new name')
     new_name = input("Name: ")
+    print("Indtast 4 tal")
+    new_readline = input("Indtast en 4 cifret tal kode: ")
+    if new_readline > 4:
+      print("fejl maks 4 tal ")
+      new_readline = input("Indtast den her igen: ")
 
-    cursor.execute(sql_insert, (new_name, id))
+    cursor.execute(sql_insert, (new_name, new_readline, id))
 
     db.commit()
 
