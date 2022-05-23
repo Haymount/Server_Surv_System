@@ -41,9 +41,18 @@ try:
     print('Enter new name')
     new_name = input("Name: ")
     new_readline = input("Indtast en 4 cifret tal kode: ")
-    if new_readline > 4:
-      print("fejl maks 4 tal ")
+
+    new_readline = int(new_readline)
+
+    if new_readline <= 999:
+      print("fejl skal være 4 tal ")
       new_readline = input("Indtast den her igen: ")
+      new_readline = int(new_readline)
+    elif new_readline >= 10000:
+      print("Må maks være 4 tal")
+      new_readline = input("Indtast den her igen: ")
+      new_readline = int(new_readline)
+
 
     cursor.execute(sql_insert, (new_name, new_readline, id))
 
