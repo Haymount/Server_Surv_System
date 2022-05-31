@@ -29,7 +29,7 @@ _currDate = date.today().strftime("%Y-%m-%d")
 GPIO.setmode(GPIO.BCM)
 LEDred = 14
 GPIO.setup(LEDred, GPIO.OUT, initial=GPIO.HIGH)
-LEDgreen = 18
+LEDgreen = 15 
 GPIO.setup(LEDgreen, GPIO.OUT, initial=GPIO.LOW)
 
 # Capture SIGINT for cleanup when the script is aborted
